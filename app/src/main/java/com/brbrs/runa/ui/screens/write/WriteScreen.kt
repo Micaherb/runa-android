@@ -450,7 +450,12 @@ fun WriteScreen(
                     if (selectedMs != null) {
                         // Preserve current time, replace only date
                         val cal = Calendar.getInstance().apply { timeInMillis = uiState.entryDateTimeMs }
-                        val selCal = Calendar.getInstance().apply { timeInMillis = selectedMs }
+                        // DatePickerState exposes the selected day at midnight UTC.
+                        // Read its calendar fields in UTC so western timezones do not
+                        // shift the selected date to the previous local day.
+                        val selCal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+                            timeInMillis = selectedMs
+                        }
                         cal.set(Calendar.YEAR, selCal.get(Calendar.YEAR))
                         cal.set(Calendar.MONTH, selCal.get(Calendar.MONTH))
                         cal.set(Calendar.DAY_OF_MONTH, selCal.get(Calendar.DAY_OF_MONTH))
