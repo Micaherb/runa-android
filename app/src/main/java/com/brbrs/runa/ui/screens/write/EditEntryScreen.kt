@@ -369,9 +369,6 @@ fun EditEntryScreen(
                     val selectedMs = datePickerState.selectedDateMillis
                     if (selectedMs != null) {
                         val cal = Calendar.getInstance().apply { timeInMillis = uiState.entryDateTimeMs }
-                        // DatePickerState exposes the selected day at midnight UTC.
-                        // Read its calendar fields in UTC so western timezones do not
-                        // shift the selected date to the previous local day.
                         val selCal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
                             timeInMillis = selectedMs
                         }
